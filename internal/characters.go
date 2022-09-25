@@ -72,7 +72,7 @@ func Str2FiveElements(str string) (FiveElements, error) {
 /**
  * 候选字。
  */
-type CandidateCharacter struct {
+type Character struct {
 	// 汉字
 	Character string
 
@@ -86,21 +86,21 @@ type CandidateCharacter struct {
 	MeaningList []string
 }
 
-func (cc CandidateCharacter) String() string {
+func (cc Character) String() string {
 	meaning := strings.Join(cc.MeaningList, "、")
 	return fmt.Sprintf("%s: %s, %s属性, 寓意为%s\n", cc.Character, cc.Tune, cc.FiveElements, meaning)
 }
 
-func NewCandidateCharacter(
+func NewCharacter(
 	name string, tuneId int,
-	fiveElementsStr string, meaning string) (*CandidateCharacter, error) {
+	fiveElementsStr string, meaning string) (*Character, error) {
 	tune, err := Int2Tune(tuneId)
 	if err != nil {
 		return nil, err
 	}
 	fiveElements, err := Str2FiveElements(fiveElementsStr)
 	meaningList := strings.Split(meaning, "|")
-	return &CandidateCharacter{
+	return &Character{
 		Character:    name,
 		Tune:         tune,
 		FiveElements: fiveElements,

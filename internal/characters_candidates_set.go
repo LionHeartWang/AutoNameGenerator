@@ -13,10 +13,10 @@ import (
  */
 type CandidateCharacterSet struct {
 	Name         string
-	CharacterMap map[string]*CandidateCharacter
+	CharacterMap map[string]*Character
 }
 
-func (ccs CandidateCharacterSet) Add(cc *CandidateCharacter) {
+func (ccs CandidateCharacterSet) Add(cc *Character) {
 	if cc != nil {
 		character := cc.Character
 		ccs.CharacterMap[character] = cc
@@ -37,7 +37,7 @@ func (ccs CandidateCharacterSet) String() string {
 }
 
 func NewCandidateCharacterSet(name string) *CandidateCharacterSet {
-	characterMap := make(map[string]*CandidateCharacter)
+	characterMap := make(map[string]*Character)
 	return &CandidateCharacterSet{
 		Name:         name,
 		CharacterMap: characterMap,
@@ -60,12 +60,12 @@ func LoadCandidateCharacterSetFromFile(name string, filePath string) (*Candidate
 		if len(fields) != 4 {
 			continue
 		}
-		tune, idErr := strconv.Atoi(fields[0])
+		tune, idErr := strconv.Atoi(fields[1])
 		if idErr != nil {
 			return ccs, idErr
 		}
 
-		cs, csErr := NewCandidateCharacter(fields[0], tune, fields[2], fields[3])
+		cs, csErr := NewCharacter(fields[0], tune, fields[2], fields[3])
 		if csErr != nil {
 			return ccs, csErr
 		}

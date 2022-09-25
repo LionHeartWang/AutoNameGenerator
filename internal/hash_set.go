@@ -1,61 +1,50 @@
 package internal
 
 import (
-	"sync"
+	"bytes"
+	"fmt"
 )
 
-
+// HashSet 辅助类
 type HashSet struct {
-	Len int
-	m   sync.Map
+	set map[string] bool
 }
 
-var value interface{}
+func NewHashSet() *HashSet{
+	return &HashSet{make(map[string]bool)}
+}
 
-func NewHashSet() *HashSet {
-	set := &HashSet{
-		Len: 0,
-		m:   sync.Map{},
+func (set *HashSet) Add(i string) bool {
+	_, found := set.set[i]
+	// 添加元素
+	set.set[i] = true
+	// 已经有了返回false，否则添加成功
+	return !found
+}
+
+func (set *HashSet) Contains(i string) bool {
+	_, found := set.set[i]
+	return found
+}
+
+func (set *HashSet) Remove(i string) {
+	delete(set.set, i)
+}
+
+func (set *HashSet) Print() {
+	for k, _ := range set.set {
+		fmt.Println(k)
 	}
-	return set
 }
-func (hs *HashSet) Put(data interface{}) bool {
-	if hs.IsExist(data) {
-		return false
+
+func (set *HashSet) Size() int {
+	return len(set.set)
+}
+
+func (set *HashSet) FormatToString() string {
+	var buf bytes.Buffer
+	for k, _ := range set.set {
+		buf.WriteString(k+"\n")
 	}
-	hs.m.Store(data, value)
-	hs.Len++
-	return true
-}
-
-func (hs *HashSet) Get() []interface{} {
-	if hs.Len == 0 {
-		return nil
-	}
-	res := make([]interface{}, 0, hs.Len)
-	hs.m.Range(func(key, value interface{}) bool {
-		res = append(res, key)
-		return true
-	})
-	return res
-}
-
-func (hs *HashSet) Delete(data interface{}) bool {
-	if !hs.IsExist(data) {
-		return false
-	}
-	hs.m.Delete(data)
-	hs.Len--
-	return true
-}
-
-func (hs *HashSet) Clear() {
-	hs.Len = 0
-	hs.m = sync.Map{}
-}
-
-func (hs *HashSet) IsExist(data interface{}) bool {
-	_, ok := hs.m.Load(data)
-	return ok
-
+	return buf.String()
 }

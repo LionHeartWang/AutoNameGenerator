@@ -1,5 +1,6 @@
 package internal
 
+import "strconv"
 
 /**
  * 声调组合。
@@ -8,6 +9,37 @@ type TuneTuple3 struct {
 	First  Tune
 	Second Tune
 	Third  Tune
+}
+
+func (tuple TuneTuple3) String() string {
+	var result = strconv.Itoa(int(tuple.First)) + strconv.Itoa(int(tuple.Second)) + strconv.Itoa(int(tuple.Third))
+	return result
+}
+
+func (tuple TuneTuple3) Explain() string {
+	var result = GetPingZe(tuple.First)
+	result += GetPingZe(tuple.Second)
+	result += GetPingZe(tuple.Third)
+	return result
+}
+
+func GetPingZe(tune Tune) string {
+	switch tune {
+	case TuneFirst: {
+		return "平"
+	}
+	case TuneSecond: {
+		return "平"
+	}
+	case TuneThird: {
+		return "仄"
+	}
+	case TuneFourth: {
+		return "仄"
+	}
+	default:
+		return ""
+	}
 }
 
 func NewTuneTuple3(first Tune, second Tune, third Tune) *TuneTuple3 {
@@ -84,5 +116,5 @@ func init() {
 
 func AddPreferredTuneTuple3(first int, second int, third int) {
 	tuple, _ := NewTuneTuple3FromNum(first, second, third)
-	PreferredTuneTupleSet.Put(*tuple)
+	_ = PreferredTuneTupleSet.Add(tuple.String())
 }

@@ -1,5 +1,6 @@
 package internal
 
+import "fmt"
 
 /**
  * 名字生成器。
@@ -45,9 +46,11 @@ func (ng NameGenerator) Generate() []*Name {
 
 func IsValidName(name *Name) bool {
 	if HasDuplicate(name) {
+		fmt.Printf("淘汰包含重复的名字：%s\n", name)
 		return false
 	}
 	if BadTuneComposite(name) {
+		fmt.Printf("淘汰平仄不合理的名字：%s\n", name)
 		return false
 	}
 	return true
@@ -57,7 +60,7 @@ func HasDuplicate(name *Name) bool {
 	fc := name.FirstCharacter.Character
 	mc := name.MiddleCharacter.Character
 	lc := name.LastCharacter.Character
-	return fc != mc && fc != lc && mc != lc
+	return fc == mc || fc == lc || mc == lc
 }
 
 func BadTuneComposite(name *Name) bool {
@@ -65,5 +68,5 @@ func BadTuneComposite(name *Name) bool {
 	mt := name.MiddleCharacter.Tune
 	lt := name.LastCharacter.Tune
 	tuneTuple := NewTuneTuple3(ft, mt, lt)
-	return !PreferredTuneTupleSet.IsExist(tuneTuple)
+	return !PreferredTuneTupleSet.Contains(tuneTuple.String())
 }
