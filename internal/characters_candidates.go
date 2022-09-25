@@ -99,40 +99,11 @@ func NewCandidateCharacter(
 		return nil, err
 	}
 	fiveElements, err := Str2FiveElements(fiveElementsStr)
-	meaningList := strings.Split(meaning, ",")
+	meaningList := strings.Split(meaning, "|")
 	return &CandidateCharacter{
 		Character:    name,
 		Tune:         tune,
 		FiveElements: fiveElements,
 		MeaningList:  meaningList,
 	}, nil
-}
-
-
-/**
- * 候选集。
- */
-type CandidateCharacterSet struct {
-	Name string
-	CharacterMap map[string]*CandidateCharacter
-}
-
-func (ccs CandidateCharacterSet) Add(cc *CandidateCharacter) {
-	if cc != nil {
-		character := cc.Character
-		ccs.CharacterMap[character] = cc
-	}
-}
-
-func (ccs CandidateCharacterSet) Remove(character string) {
-	delete(ccs.CharacterMap, character)
-}
-
-func (ccs CandidateCharacterSet) String() string {
-	var result = ccs.Name
-	for _, v := range ccs.CharacterMap {
-		result += v.String()
-		result += "\n"
-	}
-	return result
 }
