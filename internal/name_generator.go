@@ -53,6 +53,14 @@ func IsValidName(name *Name) bool {
 		fmt.Printf("淘汰平仄不合理的名字：%s\n", name)
 		return false
 	}
+	if HasSameTone(name) {
+		fmt.Printf("淘汰存在同音字的名字: %s\n", name)
+		return false
+	}
+	if HasSameInitialTone(name) {
+		fmt.Printf("淘汰存在相同声母的拗口名字: %s\n", name)
+		return false
+	}
 	return true
 }
 
@@ -69,4 +77,32 @@ func BadTuneComposite(name *Name) bool {
 	lt := name.LastCharacter.Tune
 	tuneTuple := NewTuneTuple3(ft, mt, lt)
 	return !PreferredTuneTupleSet.Contains(tuneTuple.String())
+}
+
+func HasSameTone(name *Name) bool {
+	fc := name.FirstCharacter
+	mc := name.MiddleCharacter
+	lc := name.LastCharacter
+	return IsSameTone(fc, mc) || IsSameTone(mc, lc)
+}
+
+func IsSameTone(c1 *Character, c2 *Character) bool {
+	it1 := c1.InitialTone
+	ft1 := c1.FinalTone
+	it2 := c2.InitialTone
+	ft2 := c2.FinalTone
+	return it1 == it2 && ft1 == ft2
+}
+
+func HasSameInitialTone(name *Name) bool {
+	fc := name.FirstCharacter
+	mc := name.MiddleCharacter
+	lc := name.LastCharacter
+	return IsSameInitialTone(fc, mc) || IsSameInitialTone(mc, lc)
+}
+
+func IsSameInitialTone(c1 *Character, c2 *Character) bool {
+	it1 := c1.InitialTone
+	it2 := c2.InitialTone
+	return it1 == it2
 }

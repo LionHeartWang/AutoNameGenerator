@@ -82,6 +82,12 @@ type Character struct {
 	// 五行
 	FiveElements FiveElements
 
+	// 声母
+	InitialTone Tone
+
+	// 韵母
+	FinalTone Tone
+
 	// 寓意
 	MeaningList []string
 }
@@ -92,18 +98,22 @@ func (cc Character) String() string {
 }
 
 func NewCharacter(
-	name string, tuneId int,
+	name string, tuneId int, initialToneStr string, finalToneStr string,
 	fiveElementsStr string, meaning string) (*Character, error) {
 	tune, err := Int2Tune(tuneId)
 	if err != nil {
 		return nil, err
 	}
 	fiveElements, err := Str2FiveElements(fiveElementsStr)
+	initialTone := Str2Tone(initialToneStr)
+	finalTone := Str2Tone(finalToneStr)
 	meaningList := strings.Split(meaning, "|")
 	return &Character{
 		Character:    name,
 		Tune:         tune,
 		FiveElements: fiveElements,
+		InitialTone:  initialTone,
+		FinalTone:    finalTone,
 		MeaningList:  meaningList,
 	}, nil
 }
