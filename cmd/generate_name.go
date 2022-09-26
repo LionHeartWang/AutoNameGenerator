@@ -6,7 +6,6 @@ import (
 	"os"
 )
 
-
 func main() {
 	firstCcs, err := LoadCandidateCharacterSet(
 		"first", "first_character_candidate_set.txt")
@@ -37,6 +36,6 @@ func main() {
 func LoadCandidateCharacterSet(
 	name string, fileName string) (*internal.CandidateCharacterSet, error) {
 	currentDir, _ := os.Getwd()
-	filePath := currentDir + "\\assets\\" + fileName
+	filePath := currentDir + "/assets/" + fileName
 	return internal.LoadCandidateCharacterSetFromFile(name, filePath)
 }
