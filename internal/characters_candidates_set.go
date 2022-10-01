@@ -56,6 +56,9 @@ func LoadCandidateCharacterSetFromFile(name string, filePath string) (*Candidate
 
 	for fileScanner.Scan() {
 		rawText := fileScanner.Text()
+		if strings.HasPrefix(rawText, "#") {
+			continue
+		}
 		fields := strings.Split(rawText, ",")
 		if len(fields) != 6 {
 			continue

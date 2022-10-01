@@ -69,6 +69,56 @@ func Str2FiveElements(str string) (FiveElements, error) {
 	}
 }
 
+func HasGoodFiveElements(name *Name) bool {
+	fc := name.FirstCharacter
+	mc := name.MiddleCharacter
+	lc := name.LastCharacter
+	return IsGoodFiveElements(fc.FiveElements, mc.FiveElements) ||
+		IsGoodFiveElements(mc.FiveElements, lc.FiveElements)
+}
+
+func HasBadFiveElements(name *Name) bool {
+	fc := name.FirstCharacter
+	mc := name.MiddleCharacter
+	lc := name.LastCharacter
+	return IsBadFiveElements(fc.FiveElements, mc.FiveElements) ||
+		IsBadFiveElements(mc.FiveElements, lc.FiveElements)
+}
+
+func IsGoodFiveElements(fe1 FiveElements, fe2 FiveElements) bool {
+	switch fe1 {
+	case GOLD:
+		return fe2 == WATER
+	case WATER:
+		return fe2 == WOOD
+	case WOOD:
+		return fe2 == FIRE
+	case FIRE:
+		return fe2 == SOIL
+	case SOIL:
+		return fe2 == GOLD
+	default:
+		return false
+	}
+}
+
+func IsBadFiveElements(fe1 FiveElements, fe2 FiveElements) bool {
+	switch fe1 {
+	case GOLD:
+		return fe2 == WOOD
+	case WOOD:
+		return fe2 == SOIL
+	case SOIL:
+		return fe2 == WATER
+	case WATER:
+		return fe2 == FIRE
+	case FIRE:
+		return fe2 == GOLD
+	default:
+		return false
+	}
+}
+
 /**
  * 候选字。
  */

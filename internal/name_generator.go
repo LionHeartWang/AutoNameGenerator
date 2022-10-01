@@ -61,6 +61,14 @@ func IsValidName(name *Name) bool {
 		fmt.Printf("淘汰存在相同声母的拗口名字: %s\n", name)
 		return false
 	}
+	if HasSameFinalTone(name) {
+		fmt.Printf("淘汰存在相同韵母的拗口名字: %s\n", name)
+		return false
+	}
+	if HasBadFiveElements(name) {
+		fmt.Printf("淘汰存在五行相克的名字: %s\n", name)
+		return false
+	}
 	return true
 }
 
@@ -99,6 +107,19 @@ func HasSameInitialTone(name *Name) bool {
 	mc := name.MiddleCharacter
 	lc := name.LastCharacter
 	return IsSameInitialTone(fc, mc) || IsSameInitialTone(mc, lc)
+}
+
+func HasSameFinalTone(name *Name) bool {
+	fc := name.FirstCharacter
+	mc := name.MiddleCharacter
+	lc := name.LastCharacter
+	return IsSameFinalTone(fc, mc) || IsSameFinalTone(mc, lc)
+}
+
+func IsSameFinalTone(c1 *Character, c2 *Character) bool {
+	ft1 := c1.FinalTone
+	ft2 := c2.FinalTone
+	return ft1 == ft2
 }
 
 func IsSameInitialTone(c1 *Character, c2 *Character) bool {

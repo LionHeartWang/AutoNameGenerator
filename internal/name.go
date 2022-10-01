@@ -1,6 +1,5 @@
 package internal
 
-
 /**
  * 名字定义。
  */
@@ -31,6 +30,23 @@ func (name Name) Explain() string {
 	result += name.FirstCharacter.FiveElements.String()
 	result += name.MiddleCharacter.FiveElements.String()
 	result += name.LastCharacter.FiveElements.String()
+	if HasGoodFiveElements(&name) {
+		result += ", 五行相生("
+		isFirst := true
+		if IsGoodFiveElements(
+			name.FirstCharacter.FiveElements, name.MiddleCharacter.FiveElements) {
+			result += name.FirstCharacter.FiveElements.String() + "生" + name.MiddleCharacter.FiveElements.String()
+			isFirst = false
+		}
+		if IsGoodFiveElements(
+			name.MiddleCharacter.FiveElements, name.LastCharacter.FiveElements) {
+			if !isFirst {
+				result += ", "
+			}
+			result += name.MiddleCharacter.FiveElements.String() + "生" + name.LastCharacter.FiveElements.String()
+		}
+		result += ")"
+	}
 	result += ", 寓意为"
 	meaning1 := name.MiddleCharacter.MeaningList
 	if len(meaning1) > 0 {
