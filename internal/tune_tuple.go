@@ -119,6 +119,9 @@ func init() {
 
 	// 阳平平平
 	AddPreferredTuneTuple3(2, 1, 1)
+	AddPreferredTuneTuple3(2, 1, 2)
+	AddPreferredTuneTuple3(2, 2, 1)
+	AddPreferredTuneTuple3(2, 2, 2)
 }
 
 func AddPreferredTuneTuple3(first int, second int, third int) {

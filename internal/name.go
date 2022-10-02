@@ -56,13 +56,18 @@ func (name Name) Explain(poemSets []*PoemSet) string {
 	}
 
 	if poemSets != nil {
+		var isFirstPoem = true
 		for _, poemSet := range poemSets {
 			sentences := poemSet.FindSentencesFitForName(&name)
 			if len(sentences) > 0 {
-				result += ", " + poemSet.Name + "云："
+				if isFirstPoem {
+					result += ", "
+				}
+				result += poemSet.Name + "云："
 				for _, sentence := range sentences {
 					result += sentence
 				}
+				isFirstPoem = false
 			}
 		}
 	} else {

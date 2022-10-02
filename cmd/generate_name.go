@@ -32,8 +32,10 @@ func main() {
 func InitPoemSets() ([]*internal.PoemSet, error) {
 	tangPoems300, err := LoadPoemsSet(
 		"唐诗", "tang_poems_300.txt")
+	chuci, err := LoadPoemsSet("楚辞", "chuci.txt")
 	var poemSets []*internal.PoemSet
 	poemSets = append(poemSets, tangPoems300)
+	poemSets = append(poemSets, chuci)
 	return poemSets, err
 }
 
