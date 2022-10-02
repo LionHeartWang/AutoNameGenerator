@@ -2,9 +2,7 @@ package internal
 
 import "fmt"
 
-/**
- * 名字生成器。
- */
+// NameGenerator 名字生成器
 type NameGenerator struct {
 	FirstCCS  *CandidateCharacterSet
 	MiddleCCS *CandidateCharacterSet

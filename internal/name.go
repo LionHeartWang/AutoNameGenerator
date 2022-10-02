@@ -1,8 +1,6 @@
 package internal
 
-/**
- * 名字定义。
- */
+// Name 名字定义
 type Name struct {
 	FirstCharacter  *Character
 	MiddleCharacter *Character
