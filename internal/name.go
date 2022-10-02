@@ -20,7 +20,7 @@ func (name Name) String() string {
 	return name.FirstCharacter.Character + name.MiddleCharacter.Character + name.LastCharacter.Character
 }
 
-func (name Name) Explain() string {
+func (name Name) Explain(poemSets []*PoemSet) string {
 	var result = name.String() + ":"
 	tuneComposite := NewTuneTuple3(
 		name.FirstCharacter.Tune, name.MiddleCharacter.Tune, name.LastCharacter.Tune)
@@ -55,7 +55,19 @@ func (name Name) Explain() string {
 		result += "、" + meaning2[0]
 	}
 
-	result += "。"
+	if poemSets != nil {
+		for _, poemSet := range poemSets {
+			sentences := poemSet.FindSentencesFitForName(&name)
+			if len(sentences) > 0 {
+				result += ", " + poemSet.Name + "云："
+				for _, sentence := range sentences {
+					result += sentence
+				}
+			}
+		}
+	} else {
+		result += "。"
+	}
 
 	return result
 }

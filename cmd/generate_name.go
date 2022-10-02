@@ -7,11 +7,10 @@ import (
 )
 
 func main() {
-	poemSet, err := InitPoemSets()
+	poemSets, err := InitPoemSets()
 	if err != nil {
 		return
 	}
-	fmt.Println(poemSet.String())
 
 	firstCcs, middleCcs, lastCcs, err := InitCharacterSet()
 	if err != nil {
@@ -19,17 +18,23 @@ func main() {
 	}
 
 	nameGenerator := internal.NewNameGenerator(firstCcs, middleCcs, lastCcs)
+	for _, ps := range poemSets {
+		nameGenerator.AddPoemSet(ps)
+	}
+
 	nameList := nameGenerator.Generate()
 	fmt.Println("自动起名结果：")
 	for idx, name := range nameList {
-		fmt.Printf("No.%d %s\n", idx, name.Explain())
+		fmt.Printf("No.%d %s\n", idx, name.Explain(poemSets))
 	}
 }
 
-func InitPoemSets() (*internal.PoemSet, error) {
+func InitPoemSets() ([]*internal.PoemSet, error) {
 	tangPoems300, err := LoadPoemsSet(
-		"tang_poems_300", "tang_poems_300.txt")
-	return tangPoems300, err
+		"唐诗", "tang_poems_300.txt")
+	var poemSets []*internal.PoemSet
+	poemSets = append(poemSets, tangPoems300)
+	return poemSets, err
 }
 
 func InitCharacterSet() (

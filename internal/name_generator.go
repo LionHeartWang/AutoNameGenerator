@@ -4,20 +4,24 @@ import "fmt"
 
 // NameGenerator 名字生成器
 type NameGenerator struct {
-	FirstCCS  *CandidateCharacterSet
-	MiddleCCS *CandidateCharacterSet
-	LastCCS   *CandidateCharacterSet
+	FirstCCS   *CandidateCharacterSet
+	MiddleCCS  *CandidateCharacterSet
+	LastCCS    *CandidateCharacterSet
+	PoemSetMap map[string]*PoemSet
 }
 
 func NewNameGenerator(
 	firstCcs *CandidateCharacterSet,
 	middleCcs *CandidateCharacterSet,
 	lastCcs *CandidateCharacterSet) *NameGenerator {
-	return &NameGenerator{
+	poemSet := make(map[string]*PoemSet)
+	nameGenerator := NameGenerator{
 		FirstCCS:  firstCcs,
 		MiddleCCS: middleCcs,
 		LastCCS:   lastCcs,
 	}
+	nameGenerator.PoemSetMap = poemSet
+	return &nameGenerator
 }
 
 func (ng NameGenerator) String() string {
@@ -40,6 +44,23 @@ func (ng NameGenerator) Generate() []*Name {
 		}
 	}
 	return nameList
+}
+
+func (ng NameGenerator) FindSentencesFitForName(name *Name) []string {
+	var fitSentences []string
+	for _, p := range ng.PoemSetMap {
+		sentences := p.FindSentencesFitForName(name)
+		if sentences == nil || len(sentences) <= 0 {
+			continue
+		}
+		fitSentences = append(fitSentences, sentences...)
+	}
+	return fitSentences
+}
+
+func (ng NameGenerator) AddPoemSet(set *PoemSet) {
+	setName := set.Name
+	ng.PoemSetMap[setName] = set
 }
 
 func IsValidName(name *Name) bool {

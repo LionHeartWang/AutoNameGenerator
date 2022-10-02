@@ -25,18 +25,22 @@ func (tuple TuneTuple3) Explain() string {
 
 func GetPingZe(tune Tune) string {
 	switch tune {
-	case TuneFirst: {
-		return "平"
-	}
-	case TuneSecond: {
-		return "平"
-	}
-	case TuneThird: {
-		return "仄"
-	}
-	case TuneFourth: {
-		return "仄"
-	}
+	case TuneFirst:
+		{
+			return "平"
+		}
+	case TuneSecond:
+		{
+			return "平"
+		}
+	case TuneThird:
+		{
+			return "仄"
+		}
+	case TuneFourth:
+		{
+			return "仄"
+		}
 	default:
 		return ""
 	}
@@ -66,7 +70,7 @@ func NewTuneTuple3FromNum(first int, second int, third int) (*TuneTuple3, error)
 	return &TuneTuple3{
 		First:  firstTune,
 		Second: secondTune,
-		Third: thirdTune,
+		Third:  thirdTune,
 	}, nil
 }
 
@@ -112,6 +116,9 @@ func init() {
 	AddPreferredTuneTuple3(4, 3, 2)
 	AddPreferredTuneTuple3(4, 4, 1)
 	AddPreferredTuneTuple3(4, 4, 2)
+
+	// 阳平平平
+	AddPreferredTuneTuple3(2, 1, 1)
 }
 
 func AddPreferredTuneTuple3(first int, second int, third int) {
