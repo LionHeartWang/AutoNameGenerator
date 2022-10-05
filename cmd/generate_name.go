@@ -4,6 +4,7 @@ import (
 	"AutoNameGenerator/internal"
 	"fmt"
 	"os"
+	"sort"
 )
 
 func main() {
@@ -22,10 +23,20 @@ func main() {
 		nameGenerator.AddPoemSet(ps)
 	}
 
+	evaluator := nameGenerator.Evaluator
 	nameList := nameGenerator.Generate()
+	sort.SliceStable(nameList, func(i, j int) bool {
+		name1 := nameList[i]
+		name2 := nameList[j]
+		score1 := evaluator.Evaluate(name1)
+		score2 := evaluator.Evaluate(name2)
+		return score1-score2 >= 0
+	})
+
 	fmt.Println("自动起名结果：")
 	for idx, name := range nameList {
-		fmt.Printf("No.%d %s\n", idx, name.Explain(poemSets))
+		score := evaluator.Evaluate(name)
+		fmt.Printf("No.%d %s [评分%d]\n", idx, name.Explain(poemSets), score)
 	}
 }
 

@@ -8,6 +8,7 @@ type NameGenerator struct {
 	MiddleCCS  *CandidateCharacterSet
 	LastCCS    *CandidateCharacterSet
 	PoemSetMap map[string]*PoemSet
+	Evaluator  *Evaluator
 }
 
 func NewNameGenerator(
@@ -21,6 +22,7 @@ func NewNameGenerator(
 		LastCCS:   lastCcs,
 	}
 	nameGenerator.PoemSetMap = poemSet
+	nameGenerator.Evaluator = NewEvaluator(poemSet)
 	return &nameGenerator
 }
 
