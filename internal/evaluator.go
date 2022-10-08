@@ -1,5 +1,7 @@
 package internal
 
+import "fmt"
+
 // Evaluator 名字评分器
 type Evaluator struct {
 	PreferredCharacters *HashSet
@@ -19,8 +21,17 @@ var DefaultPreferredCharacters = NewHashSet()
 func (evaluator Evaluator) Evaluate(name *Name) int {
 	score := 0
 	score += evaluator.CalFiveElementsScore(name)
+	if name.String() == "王宁枫" {
+		fmt.Printf("%s score1: %d\n", name.String(), score)
+	}
 	score += evaluator.CalPoemScore(name)
+	if name.String() == "王宁枫" {
+		fmt.Printf("%s score2: %d\n", name.String(), score)
+	}
 	score += evaluator.CalPreferredCharacterScore(name)
+	if name.String() == "王宁枫" {
+		fmt.Printf("%s score3: %d\n", name.String(), score)
+	}
 	return score
 }
 
@@ -58,7 +69,7 @@ func (evaluator Evaluator) CalPreferredCharacterScore(name *Name) int {
 func CalCharacterFEScore(c1 *Character, c2 *Character) int {
 	fe1 := c1.FiveElements
 	fe2 := c2.FiveElements
-	if IsGoodFiveElements(fe1, fe2) || IsGoodFiveElements(fe2, fe1) {
+	if IsGoodFiveElements(fe1, fe2) {
 		return 1
 	}
 	if IsBadFiveElements(fe1, fe2) || IsBadFiveElements(fe2, fe1) {

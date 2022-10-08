@@ -1,6 +1,11 @@
 package internal
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+)
 
 // NameGenerator 名字生成器
 type NameGenerator struct {
@@ -90,6 +95,10 @@ func IsValidName(name *Name) bool {
 		fmt.Printf("淘汰存在五行相克的名字: %s\n", name)
 		return false
 	}
+	if InBlackList(name) {
+		fmt.Printf("淘汰黑名单中的组合名字：%s\n", name)
+		return false
+	}
 	return true
 }
 
@@ -147,4 +156,41 @@ func IsSameInitialTone(c1 *Character, c2 *Character) bool {
 	it1 := c1.InitialTone
 	it2 := c2.InitialTone
 	return it1 == it2
+}
+
+var BlackListNames = NewHashSet()
+
+func init() {
+	LoadBlackListNames()
+}
+
+func InBlackList(name *Name) bool {
+	return BlackListNames.Contains(name.String())
+}
+
+func LoadBlackListNames() {
+	currentDir, _ := os.Getwd()
+	filePath := currentDir + "/assets/blacklist_names.txt"
+	LoadBlackListNamesFromFile(filePath)
+}
+
+func LoadBlackListNamesFromFile(filePath string) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		fmt.Printf("Failed to read file %s, err: %v\n", filePath, err)
+		return
+	}
+	defer file.Close()
+	fileScanner := bufio.NewScanner(file)
+
+	for fileScanner.Scan() {
+		rawText := fileScanner.Text()
+		if strings.HasPrefix(rawText, "#") {
+			continue
+		}
+		if len(rawText) < 1 {
+			continue
+		}
+		BlackListNames.Add(rawText)
+	}
 }
